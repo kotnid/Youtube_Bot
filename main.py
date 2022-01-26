@@ -4,7 +4,7 @@ from telegram.ext import CommandHandler , CallbackQueryHandler
 from telegram.ext import MessageHandler , Filters
 
 import configparser
-from os import  rename , system
+from os import  rename , system , listdir , remove
 from subprocess import check_output
 from pytube import YouTube
 from string import punctuation
@@ -34,16 +34,27 @@ Command available :
 
 # download command
 def download(bot , update):
+    
     text = update.message['text']
     url = text[10:]
-    yt = YouTube(url) 
+    try:
+        yt = YouTube(url)
+    except:
+        update.message.reply_text(text='Invalid URL!')
+        return 0
+
+    update.message.reply_text(text='downloading...')         
     yt.streams.get_highest_resolution().download()
     title = yt.title.translate(str.maketrans('', '', punctuation))
-    rename(f"{yt.title}.mp4" ,title+".mp4")
-    system('curl --upload-file  "{}.mp4" https://transfer.sh --globoff > test.txt'.format(title))
-    with open("test.txt", "r") as file:
-        update.message.reply_text(text = file.read())
-    system('rm -rf *.mp4')    
+    for filename in listdir('.'):
+        if filename.translate(str.maketrans('', '', punctuation)) == title+'mp4':
+            rename(filename.replace("mp4","")+'mp4' ,title+".mp4")
+            break 
+
+    system(f'curl --upload-file  "{title}.mp4" https://transfer.sh --globoff > link.txt')
+    with open("link.txt", "r") as file:
+        update.message.reply_text(text = "Download your video here : {}".format(file.read()))
+    remove(title+".mp4")   
 
 # add handler to dispatcher
 dispatcher.add_handler(CommandHandler('start' , start))
