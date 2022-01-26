@@ -4,18 +4,18 @@ from telegram.ext import CommandHandler , CallbackQueryHandler
 from telegram.ext import MessageHandler , Filters
 
 import configparser
-from os import  rename , system , listdir , remove
+from os import  rename , system , listdir , remove , environ
 from subprocess import check_output
 from pytube import YouTube
 from string import punctuation
 
 # get token from config
-config = configparser.ConfigParser()
-config.read('config.ini')
-token = config['TELEGRAM']['ACCESS_TOKEN']
+# config = configparser.ConfigParser()
+# config.read('config.ini')
+# token = config['TELEGRAM']['ACCESS_TOKEN']
 
 # init bot and setup dispatcher
-updater = Updater(token=token , use_context=False)
+updater = Updater(token=environ['token'] , use_context=False)
 dispatcher = updater.dispatcher
 
 # start command 
