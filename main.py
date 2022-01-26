@@ -14,7 +14,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     datefmt= '%Y-%m-%d %H:%M')
 
 from importlib_metadata import version
-print(version('pytube'))
+
 
 # get token from config
 # config = configparser.ConfigParser()
@@ -69,10 +69,13 @@ def download(bot , update):
 def error (bot,update,error):
     update.message.reply_text(f'''error : {error}''')
 
+def test(bot , update):
+    update.message.reply_text(text = version("pytube"))
 
 # add handler to dispatcher
 dispatcher.add_handler(CommandHandler('start' , start))
 dispatcher.add_handler(CommandHandler('download' , download))
+dispatcher.add_handler(CommandHandler('test' , test))
 #dispatcher.add_error_handler(error)
 # start running bot
 updater.start_polling()
