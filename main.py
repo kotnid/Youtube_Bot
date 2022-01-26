@@ -47,7 +47,7 @@ def download(bot , update):
     text = update.message['text']
     url = text[10:]
     
-    yt = YouTube(url)
+    #yt = YouTube(url)
    
     #update.message.reply_text(text='Invalid URL!')
         #return 0
@@ -55,7 +55,8 @@ def download(bot , update):
     update.message.reply_text(text='downloading...')         
     #yt.streams.get_highest_resolution().download()
     system(f"youtube-dl {url} --output %(title)s.%(ext)s")
-    title = yt.title.translate(str.maketrans('', '', punctuation))
+    #title = yt.title.translate(str.maketrans('', '', punctuation))
+    title = "video"
     for filename in listdir('.'):
         if filename.translate(str.maketrans('', '', punctuation)) == title+'mp4':
             rename(filename.replace("mp4","")+'mp4' ,title+".mp4")
