@@ -15,7 +15,7 @@ from string import punctuation
 # token = config['TELEGRAM']['ACCESS_TOKEN']
 
 # init bot and setup dispatcher
-updater = Updater(token=environ['token'] , use_context=False)
+updater = Updater(token=environ["token"] , use_context=False)
 dispatcher = updater.dispatcher
 
 # start command 
@@ -26,9 +26,11 @@ def start(bot , update):
     update.message.reply_text(text='Hi ' + str(chat['username']))
     update.message.reply_text(text='''\
     The usage of this bot is download video from Youtube
-This bot 
+
+The source code of the bot is available at https://github.com/kotnid/Youtube_Bot
 Command available : 
     /start - show this message
+    /download url - download video (warning : only English title functionable now!!)
     \
     ''')
 
@@ -37,11 +39,11 @@ def download(bot , update):
     
     text = update.message['text']
     url = text[10:]
-    try:
-        yt = YouTube(url)
-    except:
-        update.message.reply_text(text='Invalid URL!')
-        return 0
+    
+    yt = YouTube(url)
+   
+    #update.message.reply_text(text='Invalid URL!')
+        #return 0
 
     update.message.reply_text(text='downloading...')         
     yt.streams.get_highest_resolution().download()
@@ -56,10 +58,15 @@ def download(bot , update):
         update.message.reply_text(text = "Download your video here : {}".format(file.read()))
     remove(title+".mp4")   
 
+# error handling
+def error (bot,update,error):
+    update.message.reply_text(f'''error : {error}''')
+
+
 # add handler to dispatcher
 dispatcher.add_handler(CommandHandler('start' , start))
 dispatcher.add_handler(CommandHandler('download' , download))
-
+dispatcher.add_error_handler(error)
 # start running bot
 updater.start_polling()
 updater.idle()
