@@ -22,7 +22,7 @@ from importlib_metadata import version
 # token = config['TELEGRAM']['ACCESS_TOKEN']
 
 # init bot and setup dispatcher
-updater = Updater(token=environ["token"] , use_context=False)
+updater = Updater(token="5066041467:AAFtZravwzuEDjKve9VZYiBK_FARNLfnIr0" , use_context=False)
 dispatcher = updater.dispatcher
 
 # start command 
@@ -53,7 +53,8 @@ def download(bot , update):
         #return 0
 
     update.message.reply_text(text='downloading...')         
-    yt.streams.get_highest_resolution().download()
+    #yt.streams.get_highest_resolution().download()
+    system(f"youtube-dl {url} --output %(title)s.%(ext)s")
     title = yt.title.translate(str.maketrans('', '', punctuation))
     for filename in listdir('.'):
         if filename.translate(str.maketrans('', '', punctuation)) == title+'mp4':
