@@ -8,6 +8,10 @@ from os import  rename , system , listdir , remove , environ
 from subprocess import check_output
 from pytube import YouTube
 from string import punctuation
+import logging 
+
+logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
+                    datefmt= '%Y-%m-%d %H:%M')
 
 # get token from config
 # config = configparser.ConfigParser()
@@ -66,7 +70,7 @@ def error (bot,update,error):
 # add handler to dispatcher
 dispatcher.add_handler(CommandHandler('start' , start))
 dispatcher.add_handler(CommandHandler('download' , download))
-dispatcher.add_error_handler(error)
+#dispatcher.add_error_handler(error)
 # start running bot
 updater.start_polling()
 updater.idle()
