@@ -54,7 +54,7 @@ def download(bot , update):
 
     update.message.reply_text(text='downloading...')         
     #yt.streams.get_highest_resolution().download()
-    system(f"youtube-dl {url} --output %(title)s.%(ext)s")
+    system(f"youtube-dl {url} --output video.%(ext)s")
     #title = yt.title.translate(str.maketrans('', '', punctuation))
     title = "video"
     #for filename in listdir('.'):
