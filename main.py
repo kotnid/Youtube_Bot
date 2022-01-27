@@ -4,11 +4,12 @@ from telegram.ext import CommandHandler , CallbackQueryHandler
 from telegram.ext import MessageHandler , Filters
 
 #import configparser
-from os import  rename , system , listdir , remove , environ
+from os import  rename , system , listdir , remove , environ , mkdir 
 from subprocess import check_output
-from pytube import YouTube
+from pytube import YouTube , Playlist
 from string import punctuation
 import logging 
+import shutil
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     datefmt= '%Y-%m-%d %H:%M')
@@ -39,6 +40,7 @@ Command available :
     /start - show this message
     /mp4 url - download video (warning : only English title functionable now!!)
     /mp3 url - download audio (warning : only English title functionable now!!)
+    /list url - download list (warning : only English title functionable now!!)
     \
     ''')
 
@@ -95,6 +97,26 @@ def mp3(bot , update):
         update.message.reply_text(text = "Download your audio here : {}".format(file.read()))
     remove(title+".mp3")   
 
+# download list command 
+def list(bot , update):
+    update.message.reply_text(text='downloading...') 
+    text = update.message['text']
+    url = text[10:]
+    p = Playlist(url)
+    title = p.title.translate(str.maketrans('', '', punctuation))
+    mkdir(title)
+
+    for video in p.videos:
+        video.streams.get_highest_resolution().download(title)
+        update.message.reply_text(text=f"Downloaded {video.title}")
+
+    shutil.make_archive(title, 'zip', title)    
+    update.message.reply_text(text="Uploading...")
+    system(f'curl --upload-file  "{title}.zip" https://transfer.sh --globoff > link.txt')
+    with open("link.txt", "r") as file:
+        update.message.reply_text(text = "Download your zip here : {}".format(file.read()))
+    system(f'rd /s /q "{title}"')
+    remove(title+".zip")   
 
 # error handling
 def error (bot,update,error):
@@ -104,6 +126,7 @@ def error (bot,update,error):
 dispatcher.add_handler(CommandHandler('start' , start))
 dispatcher.add_handler(CommandHandler('mp4' , mp4))
 dispatcher.add_handler(CommandHandler('mp3' , mp3))
+dispatcher.add_handler(CommandHandler("list" , list))
 dispatcher.add_error_handler(error)
 
 # start running bot
