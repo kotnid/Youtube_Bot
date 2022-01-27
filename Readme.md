@@ -59,7 +59,7 @@
 ---
 
 ## Creadit ##
-- [pytube]("https://github.com/pytube") for downloading video
-- [transfer.sh]("https://github.com/dutchcoders") for transferring file
-- [python-telegram-bot]("https://github.com/python-telegram-bot") for using api 
-- [rain2worrd]("https://github.com/rain2wood") for giving suggestion and inspiration
+[pytube]("https://github.com/pytube") for downloading video
+[transfer.sh]("https://github.com/dutchcoders") for transferring file
+[python-telegram-bot]("https://github.com/python-telegram-bot") for using api 
+[rain2wood]("https://github.com/rain2wood") for giving suggestion and inspiration
