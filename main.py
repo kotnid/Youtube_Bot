@@ -42,7 +42,7 @@ Command available :
     ''')
 
 # download command
-def download(bot , update):
+def mp4(bot , update):
     
     text = update.message['text']
     url = text[10:]
@@ -76,7 +76,7 @@ def test(bot , update):
 
 # add handler to dispatcher
 dispatcher.add_handler(CommandHandler('start' , start))
-dispatcher.add_handler(CommandHandler('download' , download))
+dispatcher.add_handler(CommandHandler('download' , mp4))
 dispatcher.add_handler(CommandHandler('test' , test))
 #dispatcher.add_error_handler(error)
 # start running bot
