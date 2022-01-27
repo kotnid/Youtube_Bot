@@ -38,9 +38,9 @@ def start(bot , update):
 The source code of the bot is available at https://github.com/kotnid/Youtube_Bot
 Command available : 
     /start - show this message
-    /mp4 url - download video (warning : only English title functionable now!!)
-    /mp3 url - download audio (warning : only English title functionable now!!)
-    /list url - download list (warning : only English title functionable now!!)
+    /mp4 url - download video 
+    /mp3 url - download audio 
+    /list url - download list 
     \
     ''')
 
@@ -58,16 +58,18 @@ def mp4(bot , update):
     update.message.reply_text(text='downloading...')         
     yt.streams.get_highest_resolution().download()
     #system(f"youtube-dl {url} --output video.%(ext)s")
-    title = yt.title.translate(str.maketrans('', '', punctuation))
+    title2 = yt.title.translate(str.maketrans('', '', punctuation))
+    if isEnglish(title2) == False:
+        title = "video"
     #title = "video"
     for filename in listdir('.'):
-        if filename.translate(str.maketrans('', '', punctuation)) == title+'mp4':
+        if filename.translate(str.maketrans('', '', punctuation)) == title2+'mp4':
             rename(filename.replace("mp4","")+'mp4' ,title+".mp4")
             break 
-
+    update.message.reply_text(text="Uploading...")
     system(f'curl --upload-file  "{title}.mp4" https://transfer.sh --globoff > link.txt')
     with open("link.txt", "r") as file:
-        update.message.reply_text(text = "Download your video here : {}".format(file.read()))
+        update.message.reply_text(text = "Download {} mp4 here : {}".format(yt.title , file.read()))
     remove(title+".mp4")   
 
 # download mp3 command 
@@ -85,16 +87,18 @@ def mp3(bot , update):
     yt.streams.get_audio_only().download()
 
 
-    title = yt.title.translate(str.maketrans('', '', punctuation))
+    title2 = yt.title.translate(str.maketrans('', '', punctuation))
+    if isEnglish(title2) == False:
+        title = "audio"
     #title = "video"
     for filename in listdir('.'):
-        if filename.translate(str.maketrans('', '', punctuation)) == title+'mp4':
+        if filename.translate(str.maketrans('', '', punctuation)) == title2+'mp4':
             rename(filename.replace("mp4","")+'mp4' ,title+".mp3")
             break 
-
+    update.message.reply_text(text="Uploading...")
     system(f'curl --upload-file  "{title}.mp3" https://transfer.sh --globoff > link.txt')
     with open("link.txt", "r") as file:
-        update.message.reply_text(text = "Download your audio here : {}".format(file.read()))
+        update.message.reply_text(text = "Download  {} mp3 here : {}".format(yt.title , file.read()))
     remove(title+".mp3")   
 
 # download list command 
@@ -104,23 +108,36 @@ def list(bot , update):
     url = text[10:]
     p = Playlist(url)
     title = p.title.translate(str.maketrans('', '', punctuation))
+    if isEnglish(title) == False:
+        title = "video"
+
     mkdir(title)
 
     for video in p.videos:
         video.streams.get_highest_resolution().download(title)
         update.message.reply_text(text=f"Downloaded {video.title}")
 
+    update.message.reply_text(text="Zipping...")
     shutil.make_archive(title, 'zip', title)    
     update.message.reply_text(text="Uploading...")
     system(f'curl --upload-file  "{title}.zip" https://transfer.sh --globoff > link.txt')
     with open("link.txt", "r") as file:
-        update.message.reply_text(text = "Download your zip here : {}".format(file.read()))
+        update.message.reply_text(text = "Download {} zip here : {}".format(p.title , file.read()))
     system(f'rd /s /q "{title}"')
     remove(title+".zip")   
 
 # error handling
 def error (bot,update,error):
     update.message.reply_text(f'''Error : {error}''')
+
+# detmine language of title
+def isEnglish(s):
+    try:
+        s.encode(encoding='utf-8').decode('ascii')
+    except UnicodeDecodeError:
+        return False
+    else:
+        return True
 
 # add handler to dispatcher
 dispatcher.add_handler(CommandHandler('start' , start))
