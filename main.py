@@ -3,7 +3,7 @@ from telegram.ext import Updater
 from telegram.ext import CommandHandler , CallbackQueryHandler
 from telegram.ext import MessageHandler , Filters
 
-import configparser
+#import configparser
 from os import  rename , system , listdir , remove , environ
 from subprocess import check_output
 from pytube import YouTube
@@ -47,20 +47,20 @@ def download(bot , update):
     text = update.message['text']
     url = text[10:]
     
-    #yt = YouTube(url)
+    yt = YouTube(url)
    
     #update.message.reply_text(text='Invalid URL!')
         #return 0
 
     update.message.reply_text(text='downloading...')         
-    #yt.streams.get_highest_resolution().download()
-    system(f"youtube-dl {url} --output video.%(ext)s")
-    #title = yt.title.translate(str.maketrans('', '', punctuation))
-    title = "video"
-    #for filename in listdir('.'):
-    #    if filename.translate(str.maketrans('', '', punctuation)) == title+'mp4':
-    #        rename(filename.replace("mp4","")+'mp4' ,title+".mp4")
-    #        break 
+    yt.streams.get_highest_resolution().download()
+    #system(f"youtube-dl {url} --output video.%(ext)s")
+    title = yt.title.translate(str.maketrans('', '', punctuation))
+    #title = "video"
+    for filename in listdir('.'):
+        if filename.translate(str.maketrans('', '', punctuation)) == title+'mp4':
+            rename(filename.replace("mp4","")+'mp4' ,title+".mp4")
+            break 
 
     system(f'curl --upload-file  "{title}.mp4" https://transfer.sh --globoff > link.txt')
     with open("link.txt", "r") as file:
