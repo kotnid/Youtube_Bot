@@ -23,7 +23,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
 # token = config['TELEGRAM']['ACCESS_TOKEN']
 
 # init bot and setup dispatcher
-updater = Updater(token="5220846217:AAEdMpEqS5umQpn82udb0870PpXHGqLnLWs" , use_context=False)
+updater = Updater(token=environ["token"] , use_context=False)
 dispatcher = updater.dispatcher
 
 # start command 
