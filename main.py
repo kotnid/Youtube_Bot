@@ -13,7 +13,7 @@ import logging
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     datefmt= '%Y-%m-%d %H:%M')
 
-from importlib_metadata import version
+
 
 
 # get token from config
@@ -69,16 +69,13 @@ def mp4(bot , update):
 
 # error handling
 def error (bot,update,error):
-    update.message.reply_text(f'''error : {error}''')
-
-def test(bot , update):
-    update.message.reply_text(text = version("pytube"))
+    update.message.reply_text(f'''Error : {error}''')
 
 # add handler to dispatcher
 dispatcher.add_handler(CommandHandler('start' , start))
 dispatcher.add_handler(CommandHandler('download' , mp4))
-dispatcher.add_handler(CommandHandler('test' , test))
-#dispatcher.add_error_handler(error)
+dispatcher.add_error_handler(error)
+
 # start running bot
 updater.start_polling()
 updater.idle()
