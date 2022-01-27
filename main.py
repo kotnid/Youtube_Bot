@@ -40,7 +40,8 @@ Command available :
     /start - show this message
     /mp4 url - download video 
     /mp3 url - download audio 
-    /list url - download list 
+    /list_mp4 url - download video list
+    /list_mp3 url - download audio list 
     \
     ''')
 
@@ -101,8 +102,8 @@ def mp3(bot , update):
         update.message.reply_text(text = "Download  {} mp3 here : {}".format(yt.title , file.read()))
     remove(title+".mp3")   
 
-# download list command 
-def list(bot , update):
+# download mp4 list command 
+def list_mp4(bot , update):
     update.message.reply_text(text='downloading...') 
     text = update.message['text']
     url = text[10:]
@@ -115,6 +116,31 @@ def list(bot , update):
 
     for video in p.videos:
         video.streams.get_highest_resolution().download(title)
+        update.message.reply_text(text=f"Downloaded {video.title}")
+
+    update.message.reply_text(text="Zipping...")
+    shutil.make_archive(title, 'zip', title)    
+    update.message.reply_text(text="Uploading...")
+    system(f'curl --upload-file  "{title}.zip" https://transfer.sh --globoff > link.txt')
+    with open("link.txt", "r") as file:
+        update.message.reply_text(text = "Download {} zip here : {}".format(p.title , file.read()))
+    system(f'rd /s /q "{title}"')
+    remove(title+".zip")   
+
+# download mp3 list command 
+def list_mp3(bot , update):
+    update.message.reply_text(text='downloading...') 
+    text = update.message['text']
+    url = text[10:]
+    p = Playlist(url)
+    title = p.title.translate(str.maketrans('', '', punctuation))
+    if isEnglish(title) == False:
+        title = "audio"
+
+    mkdir(title)
+
+    for video in p.videos:
+        video.streams.get_audio_only().download(output_path=title , filename="{}.mp3".format(video.title.translate(str.maketrans('', '', punctuation))))
         update.message.reply_text(text=f"Downloaded {video.title}")
 
     update.message.reply_text(text="Zipping...")
@@ -143,7 +169,8 @@ def isEnglish(s):
 dispatcher.add_handler(CommandHandler('start' , start))
 dispatcher.add_handler(CommandHandler('mp4' , mp4))
 dispatcher.add_handler(CommandHandler('mp3' , mp3))
-dispatcher.add_handler(CommandHandler("list" , list))
+dispatcher.add_handler(CommandHandler("list_mp4" , list_mp4))
+dispatcher.add_handler(CommandHandler("list_mp3" , list_mp3))
 dispatcher.add_error_handler(error)
 
 # start running bot
