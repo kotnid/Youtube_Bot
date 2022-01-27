@@ -37,7 +37,7 @@ def start(bot , update):
 The source code of the bot is available at https://github.com/kotnid/Youtube_Bot
 Command available : 
     /start - show this message
-    /download url - download video (warning : only English title functionable now!!)
+    /mp4 url - download video (warning : only English title functionable now!!)
     \
     ''')
 
@@ -73,7 +73,7 @@ def error (bot,update,error):
 
 # add handler to dispatcher
 dispatcher.add_handler(CommandHandler('start' , start))
-dispatcher.add_handler(CommandHandler('download' , mp4))
+dispatcher.add_handler(CommandHandler('mp4' , mp4))
 dispatcher.add_error_handler(error)
 
 # start running bot
