@@ -38,10 +38,11 @@ The source code of the bot is available at https://github.com/kotnid/Youtube_Bot
 Command available : 
     /start - show this message
     /mp4 url - download video (warning : only English title functionable now!!)
+    /mp3 url - download audio (warning : only English title functionable now!!)
     \
     ''')
 
-# download command
+# download mp4 command
 def mp4(bot , update):
     
     text = update.message['text']
@@ -67,6 +68,34 @@ def mp4(bot , update):
         update.message.reply_text(text = "Download your video here : {}".format(file.read()))
     remove(title+".mp4")   
 
+# download mp3 command 
+def mp3(bot , update):
+    
+    text = update.message['text']
+    url = text[10:]
+    
+    yt = YouTube(url)
+   
+    #update.message.reply_text(text='Invalid URL!')
+        #return 0
+
+    update.message.reply_text(text='downloading...')         
+    yt.streams.get_audio_only().download()
+
+
+    title = yt.title.translate(str.maketrans('', '', punctuation))
+    #title = "video"
+    for filename in listdir('.'):
+        if filename.translate(str.maketrans('', '', punctuation)) == title+'mp4':
+            rename(filename.replace("mp4","")+'mp4' ,title+".mp3")
+            break 
+
+    system(f'curl --upload-file  "{title}.mp3" https://transfer.sh --globoff > link.txt')
+    with open("link.txt", "r") as file:
+        update.message.reply_text(text = "Download your audio here : {}".format(file.read()))
+    remove(title+".mp3")   
+
+
 # error handling
 def error (bot,update,error):
     update.message.reply_text(f'''Error : {error}''')
@@ -74,6 +103,7 @@ def error (bot,update,error):
 # add handler to dispatcher
 dispatcher.add_handler(CommandHandler('start' , start))
 dispatcher.add_handler(CommandHandler('mp4' , mp4))
+dispatcher.add_handler(CommandHandler('mp3' , mp3))
 dispatcher.add_error_handler(error)
 
 # start running bot
