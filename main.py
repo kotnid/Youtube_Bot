@@ -23,7 +23,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
 # token = config['TELEGRAM']['ACCESS_TOKEN']
 
 # init bot and setup dispatcher
-updater = Updater(token=environ["token"] , use_context=False)
+updater = Updater(token="5220846217:AAEdMpEqS5umQpn82udb0870PpXHGqLnLWs" , use_context=False)
 dispatcher = updater.dispatcher
 
 # start command 
@@ -57,16 +57,20 @@ def mp4(bot , update):
         #return 0
 
     update.message.reply_text(text='downloading...')         
-    yt.streams.get_highest_resolution().download()
+    
     #system(f"youtube-dl {url} --output video.%(ext)s")
     title2 = yt.title.translate(str.maketrans('', '', punctuation))
     if isEnglish(title2) == False:
         title = "video"
+    else :
+        title = title2    
+
+    yt.streams.get_highest_resolution().download(filename=title+".mp4")    
     #title = "video"
-    for filename in listdir('.'):
-        if filename.translate(str.maketrans('', '', punctuation)) == title2+'mp4':
-            rename(filename.replace("mp4","")+'mp4' ,title+".mp4")
-            break 
+    #for filename in listdir('.'):
+    #    if filename.translate(str.maketrans('', '', punctuation)) == title2+'mp4':
+    #        rename(filename.replace("mp4","")+'mp4' ,title+".mp4")
+    #        break 
     update.message.reply_text(text="Uploading...")
     system(f'curl --upload-file  "{title}.mp4" https://transfer.sh --globoff > link.txt')
     with open("link.txt", "r") as file:
@@ -91,16 +95,19 @@ def mp3(bot , update):
     title2 = yt.title.translate(str.maketrans('', '', punctuation))
     if isEnglish(title2) == False:
         title = "audio"
+    else :
+        title = title2
+    yt.streams.get_highest_resolution().download(filename=title+".mp3")     
     #title = "video"
-    for filename in listdir('.'):
-        if filename.translate(str.maketrans('', '', punctuation)) == title2+'mp4':
-            rename(filename.replace("mp4","")+'mp4' ,title+".mp3")
-            break 
+    #for filename in listdir('.'):
+    #    if filename.translate(str.maketrans('', '', punctuation)) == title2+'mp4':
+    #        rename(filename.replace("mp4","")+'mp4' ,title+".mp3")
+    #        break 
     update.message.reply_text(text="Uploading...")
     system(f'curl --upload-file  "{title}.mp3" https://transfer.sh --globoff > link.txt')
     with open("link.txt", "r") as file:
         update.message.reply_text(text = "Download  {} mp3 here : {}".format(yt.title , file.read()))
-    remove(title+".mp3")   
+    remove(title+".mp3")
 
 # download mp4 list command 
 def list_mp4(bot , update):
