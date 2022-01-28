@@ -76,7 +76,14 @@ def mp4(bot , update):
     update.message.reply_text(text="Uploading...")
     system(f'curl --upload-file  "{title}.mp4" https://transfer.sh --globoff > link.txt')
     with open("link.txt", "r") as file:
-        update.message.reply_text(text = "Download {} mp4 here : {}".format(yt.title , file.read()))
+        update.message.reply_text(text = '''
+Title : {}
+Author : {}
+Publish Date : {}
+YouTube Url : {} 
+
+Download link : {}
+'''.format(yt.title , yt.author , yt.publish_date ,url ,  file.read()))
     remove(title+".mp4")   
 
 # download mp3 command 
@@ -108,7 +115,14 @@ def mp3(bot , update):
     update.message.reply_text(text="Uploading...")
     system(f'curl --upload-file  "{title}.mp3" https://transfer.sh --globoff > link.txt')
     with open("link.txt", "r") as file:
-        update.message.reply_text(text = "Download  {} mp3 here : {}".format(yt.title , file.read()))
+                update.message.reply_text(text = '''
+Title : {}
+Author : {}
+Publish Date : {}
+YouTube Url : {}
+
+Download link : {}
+'''.format(yt.title , yt.author , yt.publish_date ,url ,  file.read()) )
     remove(title+".mp3")
 
 # download mp4 list command 
@@ -132,7 +146,12 @@ def list_mp4(bot , update):
     update.message.reply_text(text="Uploading...")
     system(f'curl --upload-file  "{title}.zip" https://transfer.sh --globoff > link.txt')
     with open("link.txt", "r") as file:
-        update.message.reply_text(text = "Download {} zip here : {}".format(p.title , file.read()))
+        update.message.reply_text(text = '''
+Title : {}
+Owner : {}
+YouTube Url : {}
+Download Link :{} 
+'''.format(p.title , p.owner , url, file.read()))
     system(f'rd /s /q "{title}"')
     remove(title+".zip")   
 
@@ -157,7 +176,13 @@ def list_mp3(bot , update):
     update.message.reply_text(text="Uploading...")
     system(f'curl --upload-file  "{title}.zip" https://transfer.sh --globoff > link.txt')
     with open("link.txt", "r") as file:
-        update.message.reply_text(text = "Download {} zip here : {}".format(p.title , file.read()))
+        update.message.reply_text(text = '''
+Title : {}
+Owner : {}
+YouTube Url : {}
+
+Download Link : {}
+'''.format(p.title , p.owner , url, file.read()))
     system(f'rd /s /q "{title}"')
     remove(title+".zip")   
 
