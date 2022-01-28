@@ -98,7 +98,7 @@ def mp3(bot , update):
         #return 0
 
     update.message.reply_text(text='downloading...')         
-    yt.streams.get_audio_only().download()
+    
 
 
     title2 = yt.title.translate(str.maketrans('', '', punctuation))
@@ -106,7 +106,7 @@ def mp3(bot , update):
         title = "audio"
     else :
         title = title2
-    yt.streams.get_highest_resolution().download(filename=title+".mp3")     
+    yt.streams.get_audio_only().download(filename=title+".mp3")     
     #title = "video"
     #for filename in listdir('.'):
     #    if filename.translate(str.maketrans('', '', punctuation)) == title2+'mp4':
