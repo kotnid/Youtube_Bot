@@ -5,7 +5,7 @@
 
 ![mp4](src/mp4.png) 
 
-[YouTube bot]("t.me/tkt_Youtube_bot")
+[YouTube bot]("https://t.me/tkt_Youtube_bot")
 
 ---
 
