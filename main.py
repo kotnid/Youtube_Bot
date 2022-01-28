@@ -43,6 +43,7 @@ Command available :
     /mp3 url - download audio 
     /list_mp4 url - download video list
     /list_mp3 url - download audio list 
+    /search Search - search video
     \
     ''')
 
