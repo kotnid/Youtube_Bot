@@ -4,6 +4,7 @@ from telegram.ext import CommandHandler , CallbackQueryHandler
 from telegram.ext import MessageHandler , Filters
 
 #import configparser
+from youtube_search import YoutubeSearch
 from os import  rename , system , listdir , remove , environ , mkdir 
 from subprocess import check_output
 from pytube import YouTube , Playlist
@@ -23,7 +24,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
 # token = config['TELEGRAM']['ACCESS_TOKEN']
 
 # init bot and setup dispatcher
-updater = Updater(token=environ["token"] , use_context=False)
+updater = Updater(token="5066041467:AAFtZravwzuEDjKve9VZYiBK_FARNLfnIr0" , use_context=False)
 dispatcher = updater.dispatcher
 
 # start command 
@@ -159,6 +160,16 @@ def list_mp3(bot , update):
     system(f'rd /s /q "{title}"')
     remove(title+".zip")   
 
+def search(bot , update):
+    text = update.message['text']
+    Search = text.replace("/search" , "")
+    results = YoutubeSearch(Search, max_results=5).to_dict()
+    update.message.reply_text(text = "Top 5 result of {}".format(Search))
+    for result in results:
+        update.message.reply_text(text = '''
+Title : {}
+Url : https://youtube.com{}'''.format(result['title'] , result['url_suffix']))
+
 # error handling
 def error (bot,update,error):
     update.message.reply_text(f'''Error : {error}''')
@@ -178,6 +189,7 @@ dispatcher.add_handler(CommandHandler('mp4' , mp4))
 dispatcher.add_handler(CommandHandler('mp3' , mp3))
 dispatcher.add_handler(CommandHandler("list_mp4" , list_mp4))
 dispatcher.add_handler(CommandHandler("list_mp3" , list_mp3))
+dispatcher.add_handler(CommandHandler("search" , search))
 dispatcher.add_error_handler(error)
 
 # start running bot
