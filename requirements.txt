@@ -3,3 +3,4 @@ pytube3==9.6.4
 python-telegram-bot==13.6
 importlib_metadata==4.10.1
 pytube==11.0.2
+youtube_search==2.1.0
