@@ -49,17 +49,21 @@
 
 ![list_mp3](src/list_mp3.png)
 
+## **``/search (Search)``** ##
+- search video
+
 ---
 
 ## To Do List ##
-- song searching
-- custom quality 
+- Update UI
+- Custom quality 
+- Update Readme.md (now just like piece of shit)
 - ...
 
 ---
 
 ## Creadit ##
-[pytube]("https://github.com/pytube") for downloading video
-[transfer.sh]("https://github.com/dutchcoders") for transferring file
-[python-telegram-bot]("https://github.com/python-telegram-bot") for using api 
-[rain2wood]("https://github.com/rain2wood") for giving suggestion and inspiration
+- [pytube](https://github.com/pytube) for downloading video
+- [transfer.sh](https://github.com/dutchcoders) for transferring file
+- [python-telegram-bot](https://github.com/python-telegram-bot) for using api 
+- [rain2wood](https://github.com/rain2wood) for giving suggestion and inspiration
